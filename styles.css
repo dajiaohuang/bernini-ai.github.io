@@ -179,6 +179,71 @@ summary {
   min-height: 420px;
 }
 
+.hero-demo {
+  margin-top: 48px;
+}
+
+.demo-video-wrapper {
+  position: relative;
+  max-width: 1080px;
+  margin: 0 auto;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 24px 72px rgba(90, 113, 156, .22), 0 0 0 1px rgba(126, 151, 196, .18);
+}
+
+.demo-video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: linear-gradient(180deg, #1a1f2e 0%, #2d3548 100%);
+}
+
+.demo-video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.demo-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(143, 111, 214, .06) 0%, transparent 20%, transparent 80%, rgba(95, 159, 214, .08) 100%);
+  pointer-events: none;
+  border-radius: 24px;
+}
+
+.demo-caption {
+  max-width: 1080px;
+  margin: 18px auto 0;
+  text-align: center;
+}
+
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #8f6fd6 0%, #5f9fd6 100%);
+  border: 1px solid rgba(255, 255, 255, .24);
+}
+
+.demo-caption p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
 .eyebrow {
   color: var(--accent);
   font-weight: 800;
@@ -1281,6 +1346,18 @@ footer a {
     min-height: 300px;
   }
 
+  .hero-demo {
+    margin-top: 36px;
+  }
+
+  .demo-video-wrapper {
+    border-radius: 18px;
+  }
+
+  .demo-video-overlay {
+    border-radius: 18px;
+  }
+
   .demo-video-frame {
     min-height: 300px;
   }
@@ -1470,6 +1547,19 @@ footer a {
 
   .hero-demo-placeholder {
     min-height: 260px;
+  }
+
+  .hero-demo {
+    margin-top: 28px;
+  }
+
+  .demo-video-wrapper {
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(90, 113, 156, .18);
+  }
+
+  .demo-video-overlay {
+    border-radius: 16px;
   }
 
   .demo-video-frame {
