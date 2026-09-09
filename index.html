@@ -102,7 +102,7 @@
     <section class="section section-centered dark-showcase" id="v2v">
       <div class="container v2v-container">
         <h2 class="section-title">V2V: Video Editing</h2>
-        <p class="section-copy">Prompt-driven video editing cases. Hover over a card to reveal the editing instruction and play the videos.</p>
+        <p class="section-copy">Prompt-driven video editing cases. Use the preview control or hover over a card to reveal the editing instruction and play the videos.</p>
         <div class="video-grid" id="v2v-grid"></div>
       </div>
     </section>
@@ -119,7 +119,7 @@
       <div class="container vv2v-container">
         <h2 class="section-title">Content Insertion: Insert Image/Video into the Video</h2>
         <p class="section-copy">
-          Content insertion takes an image/video as refernce, inserting it into given video. Hover over a card to play all videos.
+          Content insertion takes an image/video as reference, inserting it into given video. Use the preview control or hover over a card to play all videos.
         </p>
         <div class="vv2v-grid" id="vv2v-grid"></div>
       </div>
@@ -128,7 +128,7 @@
     <section class="section section-centered dark-showcase" id="r2v">
       <div class="container r2v-container">
         <h2 class="section-title">R2V: Reference-to-Video Generation</h2>
-        <p class="section-copy">R2V samples support up to five reference images as inputs and generate one output video. Hover over a row to play the generated video.</p>
+        <p class="section-copy">R2V samples support up to five reference images as inputs and generate one output video. Use the preview control or hover over a row to play the generated video.</p>
         <div class="r2v-list" id="r2v-list"></div>
       </div>
     </section>
@@ -347,6 +347,15 @@
       return `<video poster="${posterUrl}" data-src="${asset(src, type)}" data-poster="${posterUrl}" loop muted playsinline preload="none" aria-label="${label}"></video>`;
     }
 
+    function makePreviewToggle() {
+      return `
+        <button class="preview-toggle" type="button" aria-expanded="false">
+          <span class="preview-toggle-icon" aria-hidden="true">▶</span>
+          <span class="preview-toggle-label">Play preview</span>
+        </button>
+      `;
+    }
+
     function makeReferenceImage(sample) {
       if (!sample.imgExt) return "";
       const baseTitle = sample.sourceTitle || sample.title;
@@ -385,6 +394,8 @@
               </div>
             </div>
           </div>
+
+          ${makePreviewToggle()}
 
           <div class="video-prompt">
             <span class="sample-badge">${badge}</span>
@@ -497,6 +508,8 @@
             </div>
           </div>
 
+          ${makePreviewToggle()}
+
           <div class="vv2v-prompt">
             <span class="sample-badge">${badge}</span>
             <span class="prompt-text">${item.title || ""}</span>
@@ -557,6 +570,7 @@
               <span>Output Video</span>
             </div>
           </div>
+          ${makePreviewToggle()}
           ${item.title ? `
             <div class="r2v-prompt">
               <span class="sample-badge">${badge}</span>
@@ -582,6 +596,7 @@
       renderR2VCases();
 
       hydrateLazyVideos();
+      enablePreviewControls();
       enableHoverPlayback();
       enableVV2VHoverPlayback();
       enableR2VHoverPlayback();
@@ -619,42 +634,65 @@
       video.load();
     }
 
+    function playPreviewVideos(card) {
+      card.querySelectorAll("video").forEach((video) => {
+        loadVideoMeta(video);
+        video.play().catch(() => {});
+      });
+    }
+
+    function stopPreviewVideos(card) {
+      card.querySelectorAll("video").forEach((video) => {
+        video.pause();
+        video.currentTime = 0;
+      });
+    }
+
+    function setPreviewState(card, active) {
+      card.classList.toggle("is-active", active);
+      const toggle = card.querySelector(".preview-toggle");
+      if (toggle) {
+        toggle.setAttribute("aria-expanded", String(active));
+        toggle.querySelector(".preview-toggle-icon").textContent = active ? "❚❚" : "▶";
+        toggle.querySelector(".preview-toggle-label").textContent = active ? "Pause preview" : "Play preview";
+      }
+      if (active) {
+        playPreviewVideos(card);
+      } else {
+        stopPreviewVideos(card);
+      }
+    }
+
+    function enablePreviewControls() {
+      document.querySelectorAll(".sample-card, .vv2v-case, .r2v-case").forEach((card) => {
+        const toggle = card.querySelector(".preview-toggle");
+        if (!toggle) return;
+        toggle.addEventListener("click", () => {
+          setPreviewState(card, !card.classList.contains("is-active"));
+        });
+      });
+    }
+
     function enableHoverPlayback() {
       document.querySelectorAll(".sample-card").forEach((card) => {
-        const videos = card.querySelectorAll("video");
-
         card.addEventListener("mouseenter", () => {
-          videos.forEach((video) => {
-            loadVideoMeta(video);
-            video.play().catch(() => {});
-          });
+          playPreviewVideos(card);
         });
 
         card.addEventListener("mouseleave", () => {
-          videos.forEach((video) => {
-            video.pause();
-            video.currentTime = 0;
-          });
+          if (!card.classList.contains("is-active")) stopPreviewVideos(card);
         });
       });
     }
 
     function enableVV2VHoverPlayback() {
       document.querySelectorAll(".vv2v-case").forEach((card) => {
-        const videos = card.querySelectorAll("video");
-
         card.addEventListener("mouseenter", () => {
-          videos.forEach((video) => {
-            loadVideoMeta(video);
-            video.play().catch(() => {});
-          });
+          playPreviewVideos(card);
         });
 
         card.addEventListener("mouseleave", () => {
-          videos.forEach((video) => {
-            video.pause();
-            video.currentTime = 0;
-          });
+          if (!card.classList.contains("is-active")) stopPreviewVideos(card);
         });
       });
     }
@@ -665,13 +703,11 @@
         if (!video) return;
 
         card.addEventListener("mouseenter", () => {
-          loadVideoMeta(video);
-          video.play().catch(() => {});
+          playPreviewVideos(card);
         });
 
         card.addEventListener("mouseleave", () => {
-          video.pause();
-          video.currentTime = 0;
+          if (!card.classList.contains("is-active")) stopPreviewVideos(card);
         });
       });
     }

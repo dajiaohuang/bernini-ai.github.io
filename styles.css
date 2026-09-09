@@ -541,6 +541,47 @@ summary {
   isolation: isolate;
 }
 
+.preview-toggle {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid rgba(126, 151, 196, .42);
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(95, 159, 214, .96), rgba(143, 111, 214, .96));
+  box-shadow: 0 8px 18px rgba(54, 73, 112, .2);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.preview-toggle:hover {
+  filter: brightness(1.06);
+}
+
+.preview-toggle:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, .96);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(95, 159, 214, .7), 0 8px 18px rgba(54, 73, 112, .2);
+}
+
+.preview-toggle-icon {
+  min-width: 12px;
+  text-align: center;
+  font-size: 11px;
+}
+
+.preview-toggle[aria-expanded="true"] {
+  background: linear-gradient(135deg, rgba(143, 111, 214, .98), rgba(95, 159, 214, .98));
+}
+
 .sample-media-grid {
   position: relative;
   display: grid;
@@ -628,7 +669,9 @@ summary {
   transition: max-height .24s ease, padding .24s ease, opacity .2s ease, transform .24s ease, border-color .24s ease;
 }
 
-.sample-card:hover .video-prompt {
+.sample-card:hover .video-prompt,
+.sample-card:focus-within .video-prompt,
+.sample-card.is-active .video-prompt {
   max-height: 116px;
   padding: 12px 14px 14px;
   opacity: 1;
@@ -821,6 +864,7 @@ summary {
 }
 
 .r2v-case {
+  position: relative;
   overflow: hidden;
   border-radius: 26px;
   background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 245, 255, .98));
@@ -974,7 +1018,9 @@ summary {
   transition: max-height .24s ease, padding .24s ease, opacity .2s ease, transform .24s ease, border-color .24s ease;
 }
 
-.r2v-case:hover .r2v-prompt {
+.r2v-case:hover .r2v-prompt,
+.r2v-case:focus-within .r2v-prompt,
+.r2v-case.is-active .r2v-prompt {
   max-height: 160px;
   padding: 14px 16px 16px;
   opacity: 1;
@@ -999,6 +1045,7 @@ summary {
 }
 
 .vv2v-case {
+  position: relative;
   overflow: hidden;
   border-radius: 26px;
   background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 245, 255, .98));
@@ -1118,7 +1165,9 @@ summary {
   transition: max-height .24s ease, padding .24s ease, opacity .2s ease, transform .24s ease, border-color .24s ease;
 }
 
-.vv2v-case:hover .vv2v-prompt {
+.vv2v-case:hover .vv2v-prompt,
+.vv2v-case:focus-within .vv2v-prompt,
+.vv2v-case.is-active .vv2v-prompt {
   max-height: 116px;
   padding: 14px 16px 16px;
   opacity: 1;
